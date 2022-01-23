@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:developer' as logger;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ios_voip_kit/call_state_type.dart';
@@ -29,7 +29,7 @@ class _IncomingCallPageState extends State<IncomingCallPage> {
     ) async {
       /// Notifies device of VoIP notifications(PushKit) with curl or your server(See README.md).
       /// [onDidReceiveIncomingPush] is not called when the app is not running, because app is not yet running when didReceiveIncomingPushWith is called.
-      print('🎈 example: onDidReceiveIncomingPush $payload');
+      logger.log('🎈 example: onDidReceiveIncomingPush $payload');
       _timeOut();
     };
 
@@ -41,7 +41,7 @@ class _IncomingCallPageState extends State<IncomingCallPage> {
         return;
       }
 
-      print('🎈 example: onDidRejectIncomingCall $uuid, $callerId');
+      logger.log('🎈 example: onDidRejectIncomingCall $uuid, $callerId');
       voIPKit.endCall();
       timeOutTimer?.cancel();
 
@@ -58,7 +58,7 @@ class _IncomingCallPageState extends State<IncomingCallPage> {
         return;
       }
 
-      print('🎈 example: onDidAcceptIncomingCall $uuid, $callerId');
+      logger.log('🎈 example: onDidAcceptIncomingCall $uuid, $callerId');
       voIPKit.acceptIncomingCall(callerState: CallStateType.calling);
       voIPKit.callConnected();
       timeOutTimer?.cancel();
@@ -111,7 +111,7 @@ class _IncomingCallPageState extends State<IncomingCallPage> {
 
                               final data = ClipboardData(text: snapshot.data);
                               await Clipboard.setData(data);
-                              Scaffold.of(context).showSnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
                                     '✅ Copy to VoIP device Token for APNs',
@@ -195,7 +195,7 @@ class _IncomingCallPageState extends State<IncomingCallPage> {
     int seconds = 15,
   }) async {
     timeOutTimer = Timer(Duration(seconds: seconds), () async {
-      print('🎈 example: timeOut');
+      logger.log('🎈 example: timeOut');
       final incomingCallerName = await voIPKit.getIncomingCallerName();
       voIPKit.unansweredIncomingCall(
         skipLocalNotification: false,

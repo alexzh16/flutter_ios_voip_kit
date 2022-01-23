@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:developer' as logger;
 import 'package:flutter/material.dart';
 import 'package:flutter_ios_voip_kit/flutter_ios_voip_kit.dart';
 
@@ -26,7 +26,7 @@ void main() {
 
   runZonedGuarded(() {
     FlutterIOSVoIPKit.instance.onDidUpdatePushToken = (token) {
-      print('🎈 example: onDidUpdatePushToken token = $token');
+      logger.log('🎈 example: onDidUpdatePushToken token = $token');
     };
     runApp(MaterialApp(
       routes: <String, WidgetBuilder>{
@@ -47,12 +47,16 @@ class _SelectCallRollState extends State<SelectCallRoll> {
   void _performExampleAction(ExampleAction action) async {
     switch (action) {
       case ExampleAction.RequestAuthorization:
-        final granted = await FlutterIOSVoIPKit.instance.requestAuthLocalNotification();
-        print('🎈 example: requestAuthLocalNotification granted = $granted');
+        final granted =
+            await FlutterIOSVoIPKit.instance.requestAuthLocalNotification();
+        logger
+            .log('🎈 example: requestAuthLocalNotification granted = $granted');
         break;
       case ExampleAction.GetSettings:
-        final settings = await FlutterIOSVoIPKit.instance.getLocalNotificationsSettings();
-        print('🎈 example: getLocalNotificationsSettings settings: \n$settings');
+        final settings =
+            await FlutterIOSVoIPKit.instance.getLocalNotificationsSettings();
+        logger.log(
+            '🎈 example: getLocalNotificationsSettings settings: \n$settings');
 
         showDialog(
             context: context,
@@ -61,7 +65,7 @@ class _SelectCallRollState extends State<SelectCallRoll> {
                 title: Text('Settings'),
                 content: Text('$settings'),
                 actions: [
-                  FlatButton(
+                  TextButton(
                     onPressed: () => Navigator.of(ctx).pop(),
                     child: Text('Ok'),
                   )

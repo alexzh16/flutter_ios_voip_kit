@@ -1,3 +1,7 @@
+## 0.0.5+1
+
+* support nullsafety
+
 ## 0.0.5
 
 * PR(#19)
